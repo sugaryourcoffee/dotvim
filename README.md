@@ -17,4 +17,6 @@ Vim configuration files
     git submodule init
     git submodule udpate
 
-Source: <http://vimcasts.org>
+Source: 
+[VIMCASTS](http://vimcasts.org)
+[Synchronizing plugins with git submodules and pathogen](http://vimcasts.org/episodes/synchronizing-plugins-with-git-submodules-and-pathogen/)
