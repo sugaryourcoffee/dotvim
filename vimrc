@@ -64,9 +64,23 @@ if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
-echo ">^.^<"
-
-" Personal mappings
+" Welcome ------------------------------------- {{{
+echo "           /"
+echo "          \\  / "
+echo "           / \\/"
+echo "            \\ /"
+echo "             /\\"
+echo "           /\\ /  "
+echo "           \ /\\/"
+echo "          / \\ / \\"
+echo "       ~~~~~~~~~~~~~"
+echo "       \\    /      /---/"
+echo "        \\   \\//   /   /"
+echo "         \\  / \\  /---/"
+echo "          |     |"
+echo "          ~~~~~~~"
+echo "      Sugar Your Coffee"
+" }}}
 
 " Gloabal mappings ---------------------------- {{{
 
@@ -78,10 +92,15 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " source (reload) .vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
 " Turn the just type word to upper case in insert mode
-
-inoremap <buffer> <c-u> <esc>bviwUA
+inoremap <c-u> <esc>bviwUA
 " Turn the word under the cursor to uppercase
-nnoremap <buffer> <c-u> viwU
+nnoremap <c-u> viwU
+" Highlite trailing white spaces > 1
+nnoremap <leader>sw :match Error /\v\s{2,}$/<cr>
+" Remove highlite for trailing white spaces 
+nnoremap <leader>sW :match none<cr>
+" Always start searching very magic
+nnoremap / /\v
 " }}}
 
 " JavaScript file settings--------------------- {{{
@@ -118,7 +137,10 @@ augroup filetype_ruby
 
   let g:rubycomplete_buffer_loading = 1
   let g:rubycomplete_classes_in_global = 1
-                       
+
+  set suffixesadd+=.rb
+  set path+=.,/usr/include,,
+
   " mark a block visually and -c will comment out the block
   au FileType ruby inoremap <buffer> <localleader>c I# <esc>
   " comment out the current line in normal mode
@@ -128,7 +150,7 @@ augroup filetype_ruby
 
   au FileType ruby iabbrev mo module<return>end<esc><up>A
   au FileType ruby iabbrev cl class<return>end<esc><up>A
- au FileType ruby  iabbrev def def<return>end<esc><up>A
+  au FileType ruby iabbrev def def<return>end<esc><up>A
   au FileType ruby iabbrev rr require_relative ''<left>
   au FileType ruby iabbrev <buffer> iff if<return>end<esc><up>A
   au FileType ruby iabbrev <buffer> doo do<return>end<esc>O
