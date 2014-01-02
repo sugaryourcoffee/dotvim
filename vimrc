@@ -51,48 +51,50 @@ set autowrite		" Automatically save before commands like :next and :make
 set hidden              " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 set expandtab           " Use softtabstop instead of tab for indentation
-set shiftwidth=2	" Indentation 4 spaces
-set softtabstop=2	" Indent 4 spaces when pressing TAB
+set shiftwidth=2	" Indentation 2 spaces
+set softtabstop=2	" Indent 2 spaces when pressing TAB
 set cindent		" Use cindent for indenting code
 set tags=./.git/tags    " ctags file is automatically created with git commands like commit
                         " and saved to the .git directory (this is a solution
                         " from Tim Pope at
                         " http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
                         
-let mapleader = "-"
-let localmapleader = "\\"
-
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-                        
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
-" JavaScript file settings--------------------- {{{
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-" }}}
-
-" filetype plugin on
-" if has('gui_running')
-"     set grepprg=grep\ -nH\ $*
-"     filetype indent on
-"     let g:tex_flavor='latex'
-" endif
-
 echo ">^.^<"
 
 " Personal mappings
+
+" Gloabal mappings ---------------------------- {{{
+
+let mapleader = "-"
+let localmapleader = "\\"
 
 " open .vimrc in a new window
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " source (reload) .vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
 " Turn the just type word to upper case in insert mode
+
 inoremap <buffer> <c-u> <esc>bviwUA
 " Turn the word under the cursor to uppercase
 nnoremap <buffer> <c-u> viwU
+" }}}
+
+" JavaScript file settings--------------------- {{{
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" }}}
+
+" Settings for GVim --------------------------- {{{
+if has('gui_running')
+  set grepprg=grep\ -nH\ $*
+  filetype indent on
+  let g:tex_flavor='latex'
+endif
+" }}}
 
 " Vimscript file settings--------------------- {{{
 augroup filetype_vim
@@ -113,6 +115,10 @@ augroup end
 " Ruby file settings--------------------- {{{
 augroup filetype_ruby
   autocmd!
+
+  let g:rubycomplete_buffer_loading = 1
+  let g:rubycomplete_classes_in_global = 1
+                       
   " mark a block visually and -c will comment out the block
   au FileType ruby inoremap <buffer> <localleader>c I# <esc>
   " comment out the current line in normal mode
@@ -120,14 +126,15 @@ augroup filetype_ruby
 
   " Ruby abbreviations
 
-  iabbrev mo module<return>end<esc><up>A
-  iabbrev cl class<return>end<esc><up>A
-  iabbrev def def<return>end<esc><up>A
-  iabbrev rr require_relative ''<left>
-  au FileType ruby iabbrev <buffer> rif if<return>end<esc><up>A
-  au FileType ruby iabbrev <buffer> rdo do<return>end<esc>O
-  au FileType ruby iabbrev <buffer> rdg do \|\|<return>end<esc><up>$i
+  au FileType ruby iabbrev mo module<return>end<esc><up>A
+  au FileType ruby iabbrev cl class<return>end<esc><up>A
+ au FileType ruby  iabbrev def def<return>end<esc><up>A
+  au FileType ruby iabbrev rr require_relative ''<left>
+  au FileType ruby iabbrev <buffer> iff if<return>end<esc><up>A
+  au FileType ruby iabbrev <buffer> doo do<return>end<esc>O
+  au FileType ruby iabbrev <buffer> do\| do \|<return>end<esc><up>$A
   au FileType ruby iabbrev <buffer> { {}<left>
   au FileType ruby iabbrev <buffer> } <esc>A
+
 augroup END
 " }}}
