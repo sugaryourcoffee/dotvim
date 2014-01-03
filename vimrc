@@ -101,10 +101,16 @@ nnoremap <leader>sw :match Error /\v\s{2,}$/<cr>
 nnoremap <leader>sW :match none<cr>
 " Always start searching very magic
 nnoremap / /\v
+
+"  nnoremap <leader>g :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 " }}}
 
 " JavaScript file settings--------------------- {{{
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" }}}
+
+" RSpec file settings ------------------------- {{{
+  au FileType ruby iabbrev dob before do<return>end<esc>O
 " }}}
 
 " Settings for GVim --------------------------- {{{
