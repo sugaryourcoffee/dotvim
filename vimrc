@@ -64,6 +64,10 @@ if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
+" Highlight column 81
+highlight ColorColumn ctermbg=255 guibg=#2c2d27
+let &colorcolumn=join(range(81,999),",")
+
 " Welcome ------------------------------------- {{{
 echo "           /"
 echo "          \\  / "
