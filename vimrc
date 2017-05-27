@@ -49,7 +49,7 @@ set incsearch		" Incremental search
 set hlsearch            " Highlight the searches
 set autowrite		" Automatically save before commands like :next and :make
 set hidden              " Hide buffers when they are abandoned
-set mouse=a		" Enable mouse usage (all modes)
+set mouse= 		" Enable mouse usage (all modes)
 set expandtab           " Use softtabstop instead of tab for indentation
 set shiftwidth=2	" Indentation 2 spaces
 set softtabstop=2	" Indent 2 spaces when pressing TAB
@@ -58,15 +58,24 @@ set tags=./.git/tags    " ctags file is automatically created with git commands 
                         " and saved to the .git directory (this is a solution
                         " from Tim Pope at
                         " http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-                        
+set wildmenu            " shows files during tab-complete in an extra line
+set path+=**            " recursive search with find in subdirectories
+
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
 " Highlight column 81
-highlight ColorColumn ctermbg=255 guibg=#2c2d27
-let &colorcolumn=join(range(81,999),",")
+function! HighlightColumn81()
+  if @% =~ '\vmpdv$'
+    return
+  endif
+  highlight ColorColumn ctermbg=255 guibg=#2c2d27
+  let &colorcolumn=join(range(81,999),",")
+endfunction
+
+autocmd BufRead,BufNewFile * call HighlightColumn81()
 
 " Welcome ------------------------------------- {{{
 echo "           /"
@@ -86,6 +95,8 @@ echo "          ~~~~~~~"
 echo "      Sugar Your Coffee"
 " }}}
 
+cabbr %% <C-R>=expand('%:p:h')<CR>
+
 " Gloabal mappings ---------------------------- {{{
 
 let mapleader = "-"
@@ -103,6 +114,9 @@ nnoremap <c-u> viwU
 nnoremap <leader>sw :match Error /\v\s{2,}$/<cr>
 " Remove highlite for trailing white spaces 
 nnoremap <leader>sW :match none<cr>
+" Always start searching very magic
+nnoremap / /\v
+
 " Always start searching very magic
 nnoremap / /\v
 
@@ -151,6 +165,9 @@ augroup filetype_ruby
   set suffixesadd+=.rb
   set path+=.,/usr/include,,
 
+  " run current file in Ruby
+  nmap <leader>rr :!ruby %<CR>
+
   " mark a block visually and -c will comment out the block
   au FileType ruby inoremap <buffer> <localleader>c I# <esc>
   " comment out the current line in normal mode
@@ -170,3 +187,43 @@ augroup filetype_ruby
 
 augroup END
 " }}}
+
+" Lines added by the Vim-R-plugin command :RpluginConfig (2014-Nov-04 21:19):
+filetype plugin on
+" Change the <LocalLeader> key:
+let maplocalleader = ","
+" Use Ctrl+Space to do omnicompletion:
+if has("gui_running")
+    inoremap <C-Space> <C-x><C-o>
+    set mouse=a
+else
+    inoremap <Nul> <C-x><C-o>
+endif
+" Press the space bar to send lines (in Normal mode) and selections to R:
+vmap <Space> <Plug>RDSendSelection
+nmap <Space> <Plug>RDSendLine
+
+" Force Vim to use 256 colors if running in a capable terminal emulator:
+if &term =~ "xterm" || &term =~ "256" || $DISPLAY != "" || $HAS_256_COLORS == "yes"
+    set t_Co=256
+endif
+
+" There are hundreds of color schemes for Vim on the internet, but you can
+" start with color schemes already installed.
+" Click on GVim menu bar "Edit / Color scheme" to know the name of your
+" preferred color scheme, then, remove the double quote (which is a comment
+" character, like the # is for R language) and replace the value "not_defined"
+" below:
+"colorscheme not_defined
+"
+
+set runtimepath+=/home/pierre/Work/VimL/mpc/
+" set runtimepath+=~/Work/vimnote/
+
+" autocmd BufNewFile *.mom.md 0r ~/.vim/templates/mom.md
+" nnoremap <c-j> /<+.\{-1,\}+><cr>c/+>/e<cr>
+" inoremap <c-j> <ESC>/<+.\{-1,}+><cr>c/+>/e<cr>
+
+let g:notes_dir="~/Documents/vimnote/"
+
+let g:elm_format_autosave = 1
